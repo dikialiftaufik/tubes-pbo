@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.barterbukukuliah.controller.UserDashboardController"
+            style="-fx-background-color: #FAFAFA;">
+
+    <!-- Top Bar: Judul dan tombol Logout -->
+    <top>
+        <HBox style="-fx-background-color: #2E7D32; -fx-padding: 10;" alignment="CENTER_RIGHT">
+            <Label fx:id="welcomeLabel"
+                   text="Selamat datang, User!"
+                   style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Button fx:id="logoutButton"
+                    text="Logout"
+                    style="-fx-background-color: #FF7043; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"
+                    onAction="#handleLogoutAction"/>
+        </HBox>
+    </top>
+
+    <!-- Left Sidebar: Menu -->
+    <left>
+        <VBox spacing="15" style="-fx-background-color: #C5E1A5; -fx-padding: 20;" prefWidth="200">
+            <Button fx:id="menuBukuSaya"
+                    text="📚 Buku Saya"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showBukuSaya"/>
+            <Button fx:id="menuCariBuku"
+                    text="🔍 Cari Buku"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showCariBuku"/>
+            <Button fx:id="menuTransaksi"
+                    text="🤝 Transaksi"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showTransaksi"/>
+            <Button fx:id="menuRating"
+                    text="⭐ Rating"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showRating"/>
+            <Button fx:id="menuNotifikasi"
+                    text="🔔 Notifikasi"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showNotifikasi"/>
+            <Button fx:id="menuProfil"
+                    text="👤 Profil"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showProfil"/>
+            <Button fx:id="menuPengaturan"
+                    text="⚙️ Pengaturan"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: #212121;"
+                    onAction="#showPengaturan"/>
+        </VBox>
+    </left>
+
+    <!-- Center: Konten Dinamis (default: Buku Saya) -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+            <!-- Judul Section -->
+            <Label text="Daftar Buku Saya"
+                   style="-fx-font-size: 24px; -fx-text-fill: #212121; -fx-font-weight: bold;"/>
+
+            <!-- TableView untuk menampilkan data buku -->
+            <TableView fx:id="bukuTable" prefHeight="500" VBox.vgrow="ALWAYS">
+                <columns>
+                    <!-- Kolom: ID -->
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="idBuku"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Judul -->
+                    <TableColumn fx:id="colJudul" text="Judul" prefWidth="180">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="judul"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Penulis -->
+                    <TableColumn fx:id="colPenulis" text="Penulis" prefWidth="140">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="penulis"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: ISBN -->
+                    <TableColumn fx:id="colIsbn" text="ISBN" prefWidth="120">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="isbn"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Mata Kuliah -->
+                    <TableColumn fx:id="colMatkul" text="Mata Kuliah" prefWidth="140">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="mataKuliah"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Kondisi -->
+                    <TableColumn fx:id="colKondisi" text="Kondisi" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="kondisi"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Harga -->
+                    <TableColumn fx:id="colHarga" text="Harga" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="hargaAsli"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Status -->
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="140">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="statusKetersediaan"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <!-- Kolom: Lihat Gambar -->
+                    <TableColumn fx:id="colLihatGambar" text="Gambar" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+            <!-- Tombol Refresh Data -->
+            <HBox alignment="CENTER" style="-fx-padding: 10;">
+                <Button fx:id="refreshButton"
+                        text="Refresh Data"
+                        style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"
+                        onAction="#refreshBukuSaya"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

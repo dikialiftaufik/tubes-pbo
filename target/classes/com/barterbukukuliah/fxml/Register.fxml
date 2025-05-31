@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.barterbukukuliah.controller.RegisterController"
+            style="-fx-background-color: #FAFAFA;">
+
+    <!-- TOP: Judul Registrasi -->
+    <top>
+        <HBox alignment="CENTER" style="-fx-padding: 30 0 30 0;">
+            <Label text="REGISTER AKUN BARU"
+                   style="-fx-font-size: 32px; -fx-text-fill: #2E7D32; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER: Form Registrasi -->
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <GridPane hgap="15" vgap="15" style="-fx-padding: 0 0 0 0;" maxWidth="500">
+                <!-- Kolom 0: Label (minWidth 140), Kolom 1: Input (prefWidth 320) -->
+                <columnConstraints>
+                    <ColumnConstraints minWidth="140" halignment="RIGHT"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="320" hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <!-- BARIS 0: NIM -->
+                <Label text="NIM:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       style="-fx-font-size: 18px;"/>
+                <TextField fx:id="nimField"
+                           promptText="Masukkan NIM"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           style="-fx-font-size: 16px;"/>
+
+                <!-- BARIS 1: Nama Lengkap -->
+                <Label text="Nama Lengkap:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       style="-fx-font-size: 18px;"/>
+                <TextField fx:id="namaField"
+                           promptText="Masukkan nama lengkap"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           style="-fx-font-size: 16px;"/>
+
+                <!-- BARIS 2: Email -->
+                <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       style="-fx-font-size: 18px;"/>
+                <TextField fx:id="emailField"
+                           promptText="contoh@student.telkomuniversity.ac.id"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1"
+                           style="-fx-font-size: 16px;"/>
+
+                <!-- BARIS 3: Password -->
+                <Label text="Password:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                       style="-fx-font-size: 18px;"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="Masukkan password"
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"
+                               style="-fx-font-size: 16px;"/>
+
+                <!-- BARIS 4: Konfirmasi Password -->
+                <Label text="Confirm Pass:" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                       style="-fx-font-size: 18px;"/>
+                <PasswordField fx:id="confirmPasswordField"
+                               promptText="Ketik ulang password"
+                               GridPane.rowIndex="4" GridPane.columnIndex="1"
+                               style="-fx-font-size: 16px;"/>
+
+                <!-- BARIS 5: Spacer -->
+                <Label text="" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <Label text="" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                <!-- BARIS 6: Tombol REGISTER (centered) -->
+                <Label text="" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                <Button fx:id="registerButton"
+                        text="REGISTER"
+                        style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                        onAction="#handleRegisterAction"
+                        GridPane.rowIndex="6" GridPane.columnIndex="1"
+                        GridPane.halignment="CENTER"
+                        prefWidth="180">
+                    <GridPane.margin>
+                        <Insets top="10"/>
+                    </GridPane.margin>
+                </Button>
+            </GridPane>
+
+            <!-- Link ke Login -->
+            <HBox spacing="30" alignment="CENTER">
+                <Label text="Sudah punya akun?" style="-fx-font-size: 14px;"/>
+                <Hyperlink text="Login di sini" onAction="#handleBackToLogin"
+                           style="-fx-font-size: 14px;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- BOTTOM: Footer -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 15;">
+            <Label text="© 2025 Barter Buku Kuliah"
+                   style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
+        </HBox>
+    </bottom>
+</BorderPane>
