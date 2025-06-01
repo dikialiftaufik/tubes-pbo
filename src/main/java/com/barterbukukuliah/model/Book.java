@@ -1,6 +1,6 @@
 package com.barterbukukuliah.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Book {
     private int idBuku;
@@ -16,129 +16,53 @@ public class Book {
     private String fotoPath1;
     private String fotoPath2;
     private String fotoPath3;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
-    public Book() {
-    }
+    // Getter & Setter
 
-    public int getIdBuku() {
-        return idBuku;
-    }
+    public int getIdBuku() { return idBuku; }
+    public void setIdBuku(int idBuku) { this.idBuku = idBuku; }
 
-    public void setIdBuku(int idBuku) {
-        this.idBuku = idBuku;
-    }
+    public int getIdPemilik() { return idPemilik; }
+    public void setIdPemilik(int idPemilik) { this.idPemilik = idPemilik; }
 
-    public int getIdPemilik() {
-        return idPemilik;
-    }
+    public String getJudul() { return judul; }
+    public void setJudul(String judul) { this.judul = judul; }
 
-    public void setIdPemilik(int idPemilik) {
-        this.idPemilik = idPemilik;
-    }
+    public String getPenulis() { return penulis; }
+    public void setPenulis(String penulis) { this.penulis = penulis; }
 
-    public String getJudul() {
-        return judul;
-    }
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
 
-    public void setJudul(String judul) {
-        this.judul = judul;
-    }
+    public String getMataKuliah() { return mataKuliah; }
+    public void setMataKuliah(String mataKuliah) { this.mataKuliah = mataKuliah; }
 
-    public String getPenulis() {
-        return penulis;
-    }
+    public String getKondisi() { return kondisi; }
+    public void setKondisi(String kondisi) { this.kondisi = kondisi; }
 
-    public void setPenulis(String penulis) {
-        this.penulis = penulis;
-    }
+    public String getDeskripsi() { return deskripsi; }
+    public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
 
-    public String getIsbn() {
-        return isbn;
-    }
+    public double getHargaAsli() { return hargaAsli; }
+    public void setHargaAsli(double hargaAsli) { this.hargaAsli = hargaAsli; }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+    public String getStatusKetersediaan() { return statusKetersediaan; }
+    public void setStatusKetersediaan(String statusKetersediaan) { this.statusKetersediaan = statusKetersediaan; }
 
-    public String getMataKuliah() {
-        return mataKuliah;
-    }
+    public String getFotoPath1() { return fotoPath1; }
+    public void setFotoPath1(String fotoPath1) { this.fotoPath1 = fotoPath1; }
 
-    public void setMataKuliah(String mataKuliah) {
-        this.mataKuliah = mataKuliah;
-    }
+    public String getFotoPath2() { return fotoPath2; }
+    public void setFotoPath2(String fotoPath2) { this.fotoPath2 = fotoPath2; }
 
-    public String getKondisi() {
-        return kondisi;
-    }
+    public String getFotoPath3() { return fotoPath3; }
+    public void setFotoPath3(String fotoPath3) { this.fotoPath3 = fotoPath3; }
 
-    public void setKondisi(String kondisi) {
-        this.kondisi = kondisi;
-    }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
-    public String getDeskripsi() {
-        return deskripsi;
-    }
-
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
-    }
-
-    public double getHargaAsli() {
-        return hargaAsli;
-    }
-
-    public void setHargaAsli(double hargaAsli) {
-        this.hargaAsli = hargaAsli;
-    }
-
-    public String getStatusKetersediaan() {
-        return statusKetersediaan;
-    }
-
-    public void setStatusKetersediaan(String statusKetersediaan) {
-        this.statusKetersediaan = statusKetersediaan;
-    }
-
-    public String getFotoPath1() {
-        return fotoPath1;
-    }
-
-    public void setFotoPath1(String fotoPath1) {
-        this.fotoPath1 = fotoPath1;
-    }
-
-    public String getFotoPath2() {
-        return fotoPath2;
-    }
-
-    public void setFotoPath2(String fotoPath2) {
-        this.fotoPath2 = fotoPath2;
-    }
-
-    public String getFotoPath3() {
-        return fotoPath3;
-    }
-
-    public void setFotoPath3(String fotoPath3) {
-        this.fotoPath3 = fotoPath3;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public Timestamp getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
 }

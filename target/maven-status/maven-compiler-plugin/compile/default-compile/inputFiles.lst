@@ -1,9 +1,12 @@
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\AdminDashboardController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\service\AuthService.java
+D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\EditBookController.java
+D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\AddBookController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\AuthController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\RegisterController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\model\User.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\module-info.java
+D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\ProfileViewController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\ForgotPasswordController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\model\Book.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\dao\UserDAO.java
@@ -11,6 +14,7 @@ D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\dao\BookDAO.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\service\UserService.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\Main.java
+D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\ProfileController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\controller\ResetPasswordController.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\util\HashUtil.java
 D:\Telkom University\Semester 2\PEMROGRAMAN BERORIENTASI OBJEK\barterbukukuliah\src\main\java\com\barterbukukuliah\util\ValidationUtil.java

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.barterbukukuliah.controller.ProfileController"
+            style="-fx-background-color: #FAFAFA;">
+
+    <!-- TOP: Judul saja -->
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #2E7D32; -fx-padding: 10;">
+            <Label text="Edit Profil"
+                   style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER: Form Edit Profil -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 20;">
+            <GridPane hgap="15" vgap="15" maxWidth="600">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="150" halignment="RIGHT"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="350" hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <!-- Baris 0: Nama Lengkap -->
+                <Label text="Nama Lengkap:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextField fx:id="namaField"
+                           promptText="Masukkan nama lengkap"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 1: Nomor Telepon -->
+                <Label text="No. Telepon:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextField fx:id="telpField"
+                           promptText="Masukkan nomor telepon"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 2: Fakultas -->
+                <Label text="Fakultas:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextField fx:id="fakultasField"
+                           promptText="Misal: Fakultas Informatika"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1"
+                           style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 3: Program Studi -->
+                <Label text="Program Studi:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextField fx:id="prodiField"
+                           promptText="Misal: Sistem Informasi"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"
+                           style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 4: Angkatan -->
+                <Label text="Angkatan (Tahun):" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextField fx:id="angkatanField"
+                           promptText="Misal: 2022"
+                           GridPane.rowIndex="4" GridPane.columnIndex="1"
+                           style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 5: Alamat -->
+                <Label text="Alamat:" GridPane.rowIndex="5" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <TextArea fx:id="alamatField"
+                          promptText="Masukkan alamat lengkap"
+                          prefRowCount="3"
+                          wrapText="true"
+                          GridPane.rowIndex="5" GridPane.columnIndex="1"
+                          style="-fx-font-size: 14px;"/>
+
+                <!-- Baris 6: Foto Profil -->
+                <Label text="Foto Profil:" GridPane.rowIndex="6" GridPane.columnIndex="0"
+                       style="-fx-font-size: 16px;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      GridPane.rowIndex="6" GridPane.columnIndex="1">
+                    <ImageView fx:id="fotoImageView"
+                               fitWidth="100"
+                               preserveRatio="true"
+                               style="-fx-border-color: #BDBDBD; -fx-border-width: 1px;"/>
+                    <Button text="Pilih Gambar"
+                            onAction="#handleChooseImage"
+                            style="-fx-font-size: 14px;"/>
+                </HBox>
+            </GridPane>
+
+            <!-- Baris 7: Tombol Simpan -->
+            <HBox alignment="CENTER" style="-fx-padding: 10;">
+                <Button text="Simpan Perubahan"
+                        fx:id="saveButton"
+                        onAction="#handleSaveAction"
+                        style="-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                        prefWidth="200"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

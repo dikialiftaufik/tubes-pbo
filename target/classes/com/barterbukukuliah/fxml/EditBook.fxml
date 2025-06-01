@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>      <!-- Import FXCollections untuk <FXCollections> -->
+<?import java.lang.String?>                     <!-- Import String agar <String> dikenali -->
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>        <!-- Import ScrollPane -->
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.barterbukukuliah.controller.EditBookController"
+            style="-fx-background-color: #FAFAFA;">
+
+    <!-- TOP: Judul “Edit Buku” -->
+    <top>
+        <HBox style="-fx-background-color: #2E7D32; -fx-padding: 10;" alignment="CENTER_LEFT">
+            <Label text="Edit Buku"
+                   style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER: ScrollPane berisi form input data buku -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-padding: 10;">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+                    <GridPane hgap="15" vgap="15" maxWidth="600">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="150" halignment="RIGHT"/>
+                        </columnConstraints>
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="350" hgrow="ALWAYS"/>
+                        </columnConstraints>
+
+                        <!-- Judul Buku -->
+                        <Label text="Judul Buku:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="judulField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   style="-fx-font-size: 14px;"/>
+
+                        <!-- Penulis -->
+                        <Label text="Penulis:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="penulisField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   style="-fx-font-size: 14px;"/>
+
+                        <!-- ISBN -->
+                        <Label text="ISBN:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="isbnField" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                   style="-fx-font-size: 14px;"/>
+
+                        <!-- Mata Kuliah -->
+                        <Label text="Mata Kuliah:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="mataKuliahField" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                   style="-fx-font-size: 14px;"/>
+
+                        <!-- Kondisi -->
+                        <Label text="Kondisi:" GridPane.rowIndex="4" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <ComboBox fx:id="kondisiCombo" prefWidth="200"
+                                  GridPane.rowIndex="4" GridPane.columnIndex="1"
+                                  style="-fx-font-size: 14px;">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Baru"/>
+                                    <String fx:value="Bagus"/>
+                                    <String fx:value="Cukup"/>
+                                    <String fx:value="Rusak Ringan"/>
+                                    <String fx:value="Rusak Sedang"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <!-- Deskripsi -->
+                        <Label text="Deskripsi:" GridPane.rowIndex="5" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextArea fx:id="deskripsiArea"
+                                  prefRowCount="3"
+                                  wrapText="true"
+                                  GridPane.rowIndex="5" GridPane.columnIndex="1"
+                                  style="-fx-font-size: 14px;"/>
+
+                        <!-- Harga Asli -->
+                        <Label text="Harga (Rp):" GridPane.rowIndex="6" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="hargaField" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                                   style="-fx-font-size: 14px;"/>
+
+                        <!-- Gambar 1 -->
+                        <Label text="Gambar 1:" GridPane.rowIndex="7" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT"
+                              GridPane.rowIndex="7" GridPane.columnIndex="1">
+                            <ImageView fx:id="imageView1"
+                                       fitWidth="100" preserveRatio="true"
+                                       style="-fx-border-color: #BDBDBD; -fx-border-width: 1px;"/>
+                            <Button fx:id="btnChoose1" text="Pilih Gambar 1"
+                                    onAction="#handleChooseImage1"
+                                    style="-fx-font-size: 14px;"/>
+                        </HBox>
+
+                        <!-- Gambar 2 -->
+                        <Label text="Gambar 2:" GridPane.rowIndex="8" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT"
+                              GridPane.rowIndex="8" GridPane.columnIndex="1">
+                            <ImageView fx:id="imageView2"
+                                       fitWidth="100" preserveRatio="true"
+                                       style="-fx-border-color: #BDBDBD; -fx-border-width: 1px;"/>
+                            <Button fx:id="btnChoose2" text="Pilih Gambar 2"
+                                    onAction="#handleChooseImage2"
+                                    style="-fx-font-size: 14px;"/>
+                        </HBox>
+
+                        <!-- Gambar 3 -->
+                        <Label text="Gambar 3:" GridPane.rowIndex="9" GridPane.columnIndex="0"
+                               style="-fx-font-size: 16px;"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT"
+                              GridPane.rowIndex="9" GridPane.columnIndex="1">
+                            <ImageView fx:id="imageView3"
+                                       fitWidth="100" preserveRatio="true"
+                                       style="-fx-border-color: #BDBDBD; -fx-border-width: 1px;"/>
+                            <Button fx:id="btnChoose3" text="Pilih Gambar 3"
+                                    onAction="#handleChooseImage3"
+                                    style="-fx-font-size: 14px;"/>
+                        </HBox>
+                    </GridPane>
+
+                    <!-- Tombol Simpan & Batal -->
+                    <HBox alignment="CENTER" spacing="20" style="-fx-padding: 10;">
+                        <Button fx:id="saveButton"
+                                text="Update"
+                                onAction="#handleSaveAction"
+                                style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                                prefWidth="150"/>
+                        <Button fx:id="cancelButton"
+                                text="Batal"
+                                onAction="#handleCancelAction"
+                                style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
+                                prefWidth="150"/>
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

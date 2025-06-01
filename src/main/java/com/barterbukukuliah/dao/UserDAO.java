@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
-import java.time.LocalDateTime;
-
 
 import com.barterbukukuliah.model.User;
 import com.barterbukukuliah.util.DatabaseConnection;
@@ -186,6 +184,29 @@ public List<User> findAllUsers() throws SQLException {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, hashedPassword);
             stmt.setString(2, email);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Update profil user: nama, nomor_telepon, fakultas, program_studi, angkatan, alamat, foto_profil.
+     */
+    public void updateProfile(User user) throws SQLException {
+        String sql = "UPDATE users SET nama = ?, nomor_telepon = ?, fakultas = ?, program_studi = ?, angkatan = ?, alamat = ?, foto_profil = ?, updated_at = CURRENT_TIMESTAMP WHERE id_user = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getNama());
+            stmt.setString(2, user.getNomorTelepon());
+            stmt.setString(3, user.getFakultas());
+            stmt.setString(4, user.getProgramStudi());
+            if (user.getAngkatan() > 0) {
+                stmt.setInt(5, user.getAngkatan());
+            } else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+            stmt.setString(6, user.getAlamat());
+            stmt.setString(7, user.getFotoProfil());
+            stmt.setInt(8, user.getIdUser());
             stmt.executeUpdate();
         }
     }
