@@ -3,6 +3,7 @@ package com.barterbukukuliah.controller;
 import com.barterbukukuliah.dao.BookDAO;
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.User;
+import com.barterbukukuliah.controller.SearchBookController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -166,7 +167,32 @@ public class UserDashboardController {
     }
 
     @FXML private void showBukuSaya()   { loadBukuSaya(); }
-    @FXML private void showCariBuku()   { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Cari Buku' sedang dalam pengembangan."); }
+    
+    @FXML
+    private void showCariBuku() {
+        try {
+            URL fxmlLocation = getClass().getResource("/com/barterbukukuliah/fxml/SearchBook.fxml");
+            if (fxmlLocation == null) {
+                throw new RuntimeException("FXML SearchBook.fxml tidak ditemukan.");
+            }
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            Pane root = loader.load();
+    
+            // Inject currentUser
+            SearchBookController controller = loader.getController();
+            controller.setUser(currentUser);
+    
+            Stage stage = new Stage();
+            stage.setTitle("Cari Buku - Barter Buku Kuliah");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman Cari Buku.");
+        }
+    }    
+
     @FXML private void showTransaksi()  { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Transaksi' sedang dalam pengembangan."); }
     @FXML private void showRating()     { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Rating' sedang dalam pengembangan."); }
     @FXML private void showNotifikasi() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Notifikasi' sedang dalam pengembangan."); }
@@ -229,7 +255,7 @@ public class UserDashboardController {
      * - Slider untuk foto_path_1 sampai foto_path_3 (jika ada)
      * - Deskripsi lengkap di bawahnya
      */
-    private void showBookDetail(Book book) {
+    public void showBookDetail(Book book) {
         // 1. Kumpulkan semua path gambar yang tidak null/blank
         List<String> paths = new ArrayList<>();
         if (book.getFotoPath1() != null && !book.getFotoPath1().isBlank()) {

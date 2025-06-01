@@ -151,4 +151,101 @@ public class BookDAO {
         }
     }
 
+    public List<Book> searchBooks(int excludeUserId,
+                                  String keyword,
+                                  String mataKuliah,
+                                  String kondisi,
+                                  String sortBy) throws SQLException {
+
+        List<Book> result = new ArrayList<>();
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT b.*, u.nama AS pemilik_nama ")
+           .append("FROM books b ")
+           .append("JOIN users u ON b.id_pemilik = u.id_user ")
+           .append("WHERE b.id_pemilik <> ? ")
+           .append("AND b.status_ketersediaan = 'Tersedia' ");
+
+        // 1. Keyword (judul, penulis, ISBN)
+        if (keyword != null && !keyword.isBlank()) {
+            sql.append("AND (LOWER(b.judul) LIKE ? OR LOWER(b.penulis) LIKE ? OR LOWER(b.isbn) LIKE ?) ");
+        }
+        // 2. Filter mataKuliah
+        if (mataKuliah != null && !mataKuliah.isBlank()) {
+            sql.append("AND LOWER(b.mata_kuliah) LIKE ? ");
+        }
+        // 3. Filter kondisi
+        if (kondisi != null && !kondisi.isBlank()) {
+            sql.append("AND b.kondisi = ? ");
+        }
+        // 4. Sort By
+        switch (sortBy) {
+            case "Newest":
+                sql.append("ORDER BY b.created_at DESC");
+                break;
+            case "Oldest":
+                sql.append("ORDER BY b.created_at ASC");
+                break;
+            case "PriceAsc":
+                sql.append("ORDER BY b.harga_asli ASC");
+                break;
+            case "PriceDesc":
+                sql.append("ORDER BY b.harga_asli DESC");
+                break;
+            case "Condition":
+                sql.append("ORDER BY FIELD(b.kondisi, 'Baru','Bagus','Cukup','Rusak Ringan','Rusak Sedang')");
+                break;
+            default:
+                sql.append("ORDER BY b.created_at DESC");
+                break;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            int idx = 1;
+            stmt.setInt(idx++, excludeUserId);
+
+            if (keyword != null && !keyword.isBlank()) {
+                String kw = "%" + keyword.toLowerCase() + "%";
+                stmt.setString(idx++, kw);
+                stmt.setString(idx++, kw);
+                stmt.setString(idx++, kw);
+            }
+            if (mataKuliah != null && !mataKuliah.isBlank()) {
+                stmt.setString(idx++, "%" + mataKuliah.toLowerCase() + "%");
+            }
+            if (kondisi != null && !kondisi.isBlank()) {
+                stmt.setString(idx++, kondisi);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setIdBuku(rs.getInt("id_buku"));
+                    book.setIdPemilik(rs.getInt("id_pemilik"));
+                    book.setJudul(rs.getString("judul"));
+                    book.setPenulis(rs.getString("penulis"));
+                    book.setIsbn(rs.getString("isbn"));
+                    book.setMataKuliah(rs.getString("mata_kuliah"));
+                    book.setKondisi(rs.getString("kondisi"));
+                    book.setDeskripsi(rs.getString("deskripsi"));
+                    book.setHargaAsli(rs.getDouble("harga_asli"));
+                    book.setStatusKetersediaan(rs.getString("status_ketersediaan"));
+                    book.setFotoPath1(rs.getString("foto_path_1"));
+                    book.setFotoPath2(rs.getString("foto_path_2"));
+                    book.setFotoPath3(rs.getString("foto_path_3"));
+                    book.setCreatedAt(rs.getTimestamp("created_at"));
+                    book.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+                    // Ambil nama pemilik dari kolom pemilik_nama
+                    book.setPemilikName(rs.getString("pemilik_nama"));
+
+                    result.add(book);
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

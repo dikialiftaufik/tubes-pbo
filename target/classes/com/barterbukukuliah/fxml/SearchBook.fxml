@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.barterbukukuliah.controller.SearchBookController"
+            style="-fx-background-color: #FAFAFA;">
+
+    <!-- TOP BAR (seperti sebelumya) -->
+    <top>
+        <BorderPane style="-fx-background-color: #2E7D32; -fx-padding: 10;">
+            <left>
+                <Button fx:id="btnBack" text="← Kembali"
+                        style="
+                            -fx-background-color: #C5E1A5;
+                            -fx-text-fill: #2E7D32;
+                            -fx-font-size: 14px;
+                            -fx-font-weight: bold;
+                            -fx-background-radius: 4px;
+                            -fx-border-radius: 4px;
+                            -fx-padding: 6 12 6 12;
+                        "
+                        onAction="#handleBackAction"/>
+            </left>
+            <center>
+                <Label text="Cari Buku"
+                       style="
+                           -fx-text-fill: white;
+                           -fx-font-size: 20px;
+                           -fx-font-weight: bold;
+                       "
+                       BorderPane.alignment="CENTER"/>
+            </center>
+        </BorderPane>
+    </top>
+
+    <!-- CENTER: Filter/Search + TableView -->
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <!-- Form Filter/Search/Sort seperti sebelumnya -->
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="80"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="200" hgrow="ALWAYS"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="20"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="80"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="200" hgrow="ALWAYS"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="20"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="80"/>
+                </columnConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="150" hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <!-- Keyword Search -->
+                <Label text="Cari:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px;"/>
+                <TextField fx:id="searchField" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           promptText="Judul / Penulis / ISBN" style="-fx-font-size: 14px;"/>
+
+                <!-- Filter Mata Kuliah -->
+                <Label text="Mata Kuliah:" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                       style="-fx-font-size: 14px;"/>
+                <TextField fx:id="matkulField" GridPane.rowIndex="0" GridPane.columnIndex="4"
+                           promptText="e.g. Pemrograman" style="-fx-font-size: 14px;"/>
+
+                <!-- Filter Kondisi -->
+                <Label text="Kondisi:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       style="-fx-font-size: 14px;"/>
+                <ComboBox fx:id="kondisiFilter" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                          prefWidth="200" style="-fx-font-size: 14px;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value=""/>
+                            <String fx:value="Baru"/>
+                            <String fx:value="Bagus"/>
+                            <String fx:value="Cukup"/>
+                            <String fx:value="Rusak Ringan"/>
+                            <String fx:value="Rusak Sedang"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Sort By -->
+                <Label text="Sort By:" GridPane.rowIndex="1" GridPane.columnIndex="3"
+                       style="-fx-font-size: 14px;"/>
+                <ComboBox fx:id="sortByCombo" GridPane.rowIndex="1" GridPane.columnIndex="4"
+                          prefWidth="150" style="-fx-font-size: 14px;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Newest"/>
+                            <String fx:value="Oldest"/>
+                            <String fx:value="PriceAsc"/>
+                            <String fx:value="PriceDesc"/>
+                            <String fx:value="Condition"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Tombol Search / Reset -->
+                <Button fx:id="btnSearch" text="Search"
+                        GridPane.rowIndex="0" GridPane.columnIndex="6"
+                        style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-font-size: 14px;"
+                        onAction="#handleSearch"/>
+                <Button fx:id="btnReset" text="Reset"
+                        GridPane.rowIndex="1" GridPane.columnIndex="6"
+                        style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-size: 14px;"
+                        onAction="#handleResetFilters"/>
+            </GridPane>
+
+            <!-- TableView Daftar Hasil Pencarian -->
+            <TableView fx:id="bookTable" prefHeight="500">
+                <columns>
+                    <TableColumn fx:id="colId"       text="ID"         prefWidth="50"/>
+                    <TableColumn fx:id="colJudul"    text="Judul"      prefWidth="180"/>
+                    <TableColumn fx:id="colPenulis"  text="Penulis"    prefWidth="150"/>
+                    <TableColumn fx:id="colIsbn"     text="ISBN"       prefWidth="120"/>
+                    <TableColumn fx:id="colMatkul"   text="MataKuliah" prefWidth="150"/>
+                    <TableColumn fx:id="colKondisi"  text="Kondisi"    prefWidth="100"/>
+                    <TableColumn fx:id="colHarga"    text="Harga (Rp)" prefWidth="100"/>
+                    <TableColumn fx:id="colStatus"   text="Status"     prefWidth="100"/>
+                    <TableColumn fx:id="colPemilik"  text="Pemilik"    prefWidth="150"/> 
+                    <TableColumn fx:id="colAksi"     text="Aksi"       prefWidth="200"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

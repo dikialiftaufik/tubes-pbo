@@ -19,50 +19,126 @@ public class Book {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    // Getter & Setter
+    // **FIELD TAMBAHAN untuk menampung nama pemilik (di‐JOIN dari tabel users)**
+    private String pemilikName;
 
-    public int getIdBuku() { return idBuku; }
-    public void setIdBuku(int idBuku) { this.idBuku = idBuku; }
+    // … Getter/Setter untuk semua field di atas … //
 
-    public int getIdPemilik() { return idPemilik; }
-    public void setIdPemilik(int idPemilik) { this.idPemilik = idPemilik; }
+    public int getIdBuku() {
+        return idBuku;
+    }
+    public void setIdBuku(int idBuku) {
+        this.idBuku = idBuku;
+    }
 
-    public String getJudul() { return judul; }
-    public void setJudul(String judul) { this.judul = judul; }
+    public int getIdPemilik() {
+        return idPemilik;
+    }
+    public void setIdPemilik(int idPemilik) {
+        this.idPemilik = idPemilik;
+    }
 
-    public String getPenulis() { return penulis; }
-    public void setPenulis(String penulis) { this.penulis = penulis; }
+    public String getJudul() {
+        return judul;
+    }
+    public void setJudul(String judul) {
+        this.judul = judul;
+    }
 
-    public String getIsbn() { return isbn; }
-    public void setIsbn(String isbn) { this.isbn = isbn; }
+    public String getPenulis() {
+        return penulis;
+    }
+    public void setPenulis(String penulis) {
+        this.penulis = penulis;
+    }
 
-    public String getMataKuliah() { return mataKuliah; }
-    public void setMataKuliah(String mataKuliah) { this.mataKuliah = mataKuliah; }
+    public String getIsbn() {
+        return isbn;
+    }
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 
-    public String getKondisi() { return kondisi; }
-    public void setKondisi(String kondisi) { this.kondisi = kondisi; }
+    public String getMataKuliah() {
+        return mataKuliah;
+    }
+    public void setMataKuliah(String mataKuliah) {
+        this.mataKuliah = mataKuliah;
+    }
 
-    public String getDeskripsi() { return deskripsi; }
-    public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
+    public String getKondisi() {
+        return kondisi;
+    }
+    public void setKondisi(String kondisi) {
+        this.kondisi = kondisi;
+    }
 
-    public double getHargaAsli() { return hargaAsli; }
-    public void setHargaAsli(double hargaAsli) { this.hargaAsli = hargaAsli; }
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
+    }
 
-    public String getStatusKetersediaan() { return statusKetersediaan; }
-    public void setStatusKetersediaan(String statusKetersediaan) { this.statusKetersediaan = statusKetersediaan; }
+    public double getHargaAsli() {
+        return hargaAsli;
+    }
+    public void setHargaAsli(double hargaAsli) {
+        this.hargaAsli = hargaAsli;
+    }
 
-    public String getFotoPath1() { return fotoPath1; }
-    public void setFotoPath1(String fotoPath1) { this.fotoPath1 = fotoPath1; }
+    public String getStatusKetersediaan() {
+        return statusKetersediaan;
+    }
+    public void setStatusKetersediaan(String statusKetersediaan) {
+        this.statusKetersediaan = statusKetersediaan;
+    }
 
-    public String getFotoPath2() { return fotoPath2; }
-    public void setFotoPath2(String fotoPath2) { this.fotoPath2 = fotoPath2; }
+    public String getFotoPath1() {
+        return fotoPath1;
+    }
+    public void setFotoPath1(String fotoPath1) {
+        this.fotoPath1 = fotoPath1;
+    }
 
-    public String getFotoPath3() { return fotoPath3; }
-    public void setFotoPath3(String fotoPath3) { this.fotoPath3 = fotoPath3; }
+    public String getFotoPath2() {
+        return fotoPath2;
+    }
+    public void setFotoPath2(String fotoPath2) {
+        this.fotoPath2 = fotoPath2;
+    }
 
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public String getFotoPath3() {
+        return fotoPath3;
+    }
+    public void setFotoPath3(String fotoPath3) {
+        this.fotoPath3 = fotoPath3;
+    }
 
-    public Timestamp getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    // --- Getter/Setter untuk field tambahan pemilikName ---
+    public String getPemilikName() {
+        return pemilikName;
+    }
+    public void setPemilikName(String pemilikName) {
+        this.pemilikName = pemilikName;
+    }
+
+    @Override
+    public String toString() {
+        return judul; // Masih menampilkan judul saat misalnya dipakai dalam ChoiceDialog
+    }
 }

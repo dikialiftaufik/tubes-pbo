@@ -15,9 +15,12 @@ com\barterbukukuliah\util\DatabaseConnection.class
 com\barterbukukuliah\controller\AdminDashboardController$1.class
 com\barterbukukuliah\controller\EditBookController.class
 com\barterbukukuliah\controller\ResetPasswordController.class
+com\barterbukukuliah\controller\SearchBookController$1.class
+com\barterbukukuliah\controller\SearchBookController.class
 com\barterbukukuliah\model\User.class
 com\barterbukukuliah\controller\UserDashboardController$1.class
 com\barterbukukuliah\service\AuthService.class
 com\barterbukukuliah\util\ValidationUtil.class
+com\barterbukukuliah\dao\TransactionDAO.class
 com\barterbukukuliah\dao\UserDAO.class
 com\barterbukukuliah\controller\AddBookController.class
