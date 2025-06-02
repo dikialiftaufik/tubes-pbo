@@ -1,9 +1,16 @@
 package com.barterbukukuliah.controller;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.barterbukukuliah.dao.BookDAO;
+import com.barterbukukuliah.dao.TransactionDAO;
 import com.barterbukukuliah.model.Book;
+import com.barterbukukuliah.model.TransaksiBarter;
 import com.barterbukukuliah.model.User;
-import com.barterbukukuliah.controller.SearchBookController;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +18,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,11 +36,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Controller untuk UserDashboard.fxml (SplitPane + sidebar),
@@ -60,7 +70,7 @@ public class UserDashboardController {
     private ObservableList<Book> bukuList = FXCollections.observableArrayList();
 
     private Pane bukuSayaPane; // Simpan layout daftar buku saya
-
+    private TransactionDAO transactionDAO = new TransactionDAO();
     /**
      * Dipanggil dari AuthController setelah login sukses.
      * Meng‐set user saat ini, inisialisasi kolom, dan muat data.
@@ -458,6 +468,34 @@ private void showTransaksi() {
         }
     }    
 
+    @FXML
+    private void handleTerimaBarter(int idTransaksi, int idBukuDiminta) {
+        try {
+            // Update status transaksi jadi Diterima
+            boolean transaksiUpdated = transactionDAO.updateStatusTransaksiDiterima(idTransaksi);
+            // Update status buku jadi Sedang Dipinjam
+            boolean bukuUpdated = bookDAO.updateStatusBukuSedangDipinjam(idBukuDiminta);
+
+            if (transaksiUpdated && bukuUpdated) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Barter diterima dan status buku diperbarui!", ButtonType.OK);
+                alert.showAndWait();
+                // Refresh UI atau reload data transaksi dan buku agar tampilan update
+                refreshData();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Gagal memperbarui status transaksi atau buku.", ButtonType.OK);
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Terjadi kesalahan: " + e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    private void refreshData() {
+        // Method untuk reload data dari DB dan update UI, implementasi sesuai kode Anda
+    }
+
     /**
      * Hapus buku dengan konfirmasi.
      */
@@ -487,6 +525,75 @@ private void showTransaksi() {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    
+    @FXML
+    private TableView<TransaksiBarter> transaksiTable;
+
+    // Asumsikan ada variabel userId login sekarang, bisa dari session atau context
+    private int loggedInUserId;
+
+    @FXML
+    private void handleTerimaTransaksi() {
+        TransaksiBarter selected = transaksiTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Pilih transaksi terlebih dahulu.");
+            return;
+        }
+
+        int idTransaksi = selected.getIdTransaksi();
+        int idBukuDiminta = selected.getIdBukuDiminta();
+
+        try {
+            boolean updatedTransaksi = transactionDAO.updateStatusTransaksiDiterima(idTransaksi);
+            boolean updatedBuku = bookDAO.updateStatusBukuSedangDipinjam(idBukuDiminta);
+
+            if (updatedTransaksi && updatedBuku) {
+                showAlert(Alert.AlertType.INFORMATION, "Transaksi diterima dan status buku diperbarui.");
+                refreshTransaksiTable();
+                refreshBukuSaya();
+                refreshCariBuku();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal memperbarui transaksi atau buku.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error: " + e.getMessage());
+        }
+    }
+
+    private void refreshTransaksiTable() {
+        try {
+            // contoh reload data transaksi user
+            // List<TransaksiBarter> list = transactionDAO.getTransactionsByUser(loggedInUserId);
+            // transaksiTable.getItems().setAll(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void refreshBukuSaya() {
+        try {
+            // List<Book> books = bookDAO.getBooksByUser(loggedInUserId);
+            // Update UI buku saya, misal listview atau tableview
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void refreshCariBuku() {
+        try {
+            // List<Book> books = bookDAO.getAllBooks();
+            // Update UI cari buku, misal tableview
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String msg) {
+        Alert alert = new Alert(type, msg, ButtonType.OK);
         alert.showAndWait();
     }
 }

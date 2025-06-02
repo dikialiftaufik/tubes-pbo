@@ -1,13 +1,13 @@
 package com.barterbukukuliah.dao;
 
-import com.barterbukukuliah.model.TransaksiBarter;
-import com.barterbukukuliah.util.DatabaseConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.barterbukukuliah.model.TransaksiBarter;
+import com.barterbukukuliah.util.DatabaseConnection;
 
 public class TransactionDAO {
 
@@ -99,8 +99,16 @@ public class TransactionDAO {
             list.add(t);
         }
     }
-
     return list;
 }
 
+public boolean updateStatusTransaksiDiterima(int idTransaksi) throws SQLException {
+    String sql = "UPDATE transactions SET status_transaksi = 'Diterima', timestamp_response = NOW() WHERE id_transaksi = ?";
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idTransaksi);
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    }
+}
 }

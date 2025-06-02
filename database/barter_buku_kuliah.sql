@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2025 at 01:45 PM
+-- Generation Time: Jun 02, 2025 at 08:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,7 +37,7 @@ CREATE TABLE `books` (
   `kondisi` enum('Baru','Bagus','Cukup','Rusak Ringan','Rusak Sedang') NOT NULL,
   `deskripsi` text DEFAULT NULL,
   `harga_asli` decimal(10,2) DEFAULT NULL,
-  `status_ketersediaan` enum('Tersedia','Dalam Proses Barter','Tidak Tersedia') DEFAULT 'Tersedia',
+  `status_ketersediaan` enum('Tersedia','Sedang Dipinjam','Tidak Tersedia') DEFAULT 'Tersedia',
   `foto_path_1` varchar(255) DEFAULT NULL,
   `foto_path_2` varchar(255) DEFAULT NULL,
   `foto_path_3` varchar(255) DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id_buku`, `id_pemilik`, `judul`, `penulis`, `isbn`, `mata_kuliah`, `kondisi`, `deskripsi`, `harga_asli`, `status_ketersediaan`, `foto_path_1`, `foto_path_2`, `foto_path_3`, `created_at`, `updated_at`) VALUES
 (1, 3, 'Core Java: Fundamentals, Volume 1', 'Cay S. Horstmann', '9780135166314', 'Pemrograman Berorientasi Objek', 'Bagus', 'Edisi ke-11 dari Core Java Volume I (Fundamentals). Buku ini umum dipakai untuk matakuliah OOP berbasis Java: menjelaskan konsep dasar Java, class, objek, inheritance, interface, exception handling, dan koleksi (collections). Cover dan halaman dalam masih rapih meski sedikit ada goresan di sudut cover karena pernah digunakan.', 150000.00, 'Tersedia', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_3_1748752313514_1.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_3_1748752313564_2.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_3_1748752313570_3.jpg', '2025-06-01 04:31:53', '2025-06-01 07:31:59'),
-(10, 5, 'Introduction to Algorithms, 3rd Edition', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '9780262033848', 'Algoritma dan Struktur Data', 'Bagus', 'Edisi ketiga buku klasik tentang algoritma komprehensif, mencakup berbagai topik seperti struktur data, algoritma graf, teori kompleksitas, dan lainnya.', 750000.00, 'Tersedia', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617352_1.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617366_2.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617370_3.jpg', '2025-06-01 10:43:37', '2025-06-01 10:43:37');
+(10, 5, 'Introduction to Algorithms, 3rd Edition', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '9780262033848', 'Algoritma dan Struktur Data', 'Bagus', 'Edisi ketiga buku klasik tentang algoritma komprehensif, mencakup berbagai topik seperti struktur data, algoritma graf, teori kompleksitas, dan lainnya.', 750000.00, 'Tersedia', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617352_1.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617366_2.jpg', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/books/book_5_1748774617370_3.jpg', '2025-06-01 10:43:37', '2025-06-01 17:13:15');
 
 -- --------------------------------------------------------
 
@@ -110,6 +110,16 @@ CREATE TABLE `notifications` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id_notifikasi`, `user_id`, `jenis`, `judul`, `pesan`, `reference_id`, `is_read`, `created_at`) VALUES
+(1, 3, 'Barter Request', 'Permintaan Barter Baru', 'Ada pengguna yang ingin menukar buku milik Anda.', 2, 0, '2025-06-01 14:27:10'),
+(2, 3, 'Request Accepted', 'Barter Anda Diterima', 'Permintaan barter Anda telah diterima oleh pemilik buku.', 4, 0, '2025-06-01 18:26:45'),
+(3, 3, 'Request Accepted', 'Barter Anda Diterima', 'Permintaan barter Anda telah diterima oleh pemilik buku.', 5, 0, '2025-06-02 01:27:11'),
+(4, 3, 'Request Accepted', 'Barter Anda Diterima', 'Permintaan barter Anda telah diterima oleh pemilik buku.', 6, 0, '2025-06-02 06:28:15');
+
 -- --------------------------------------------------------
 
 --
@@ -154,7 +164,8 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id_transaksi`, `id_buku_diminta`, `id_buku_ditawarkan`, `id_user_pengaju`, `id_user_pemberi`, `status_transaksi`, `pesan_pengaju`, `pesan_balasan`, `match_score`, `timestamp_request`, `timestamp_response`, `timestamp_confirmed`, `timestamp_completed`, `expired_at`) VALUES
-(1, 10, 1, 3, 5, 'Pending', 'plis butuh bgt', NULL, NULL, '2025-06-01 18:24:10', NULL, NULL, NULL, '2025-06-08 18:24:10');
+(4, 10, 1, 3, 5, 'Diterima', 'urgent banget', 'bolehh', 60.00, '2025-06-02 00:52:42', '2025-06-02 01:26:45', NULL, NULL, '2025-06-09 00:52:42'),
+(6, 10, 1, 3, 5, 'Diterima', 'urgent bgt', 'ok', 60.00, '2025-06-02 13:26:42', '2025-06-02 13:28:15', NULL, NULL, '2025-06-09 13:26:42');
 
 -- --------------------------------------------------------
 
@@ -204,7 +215,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `nama`, `nim`, `email`, `password_hash`, `nomor_telepon`, `fakultas`, `program_studi`, `angkatan`, `alamat`, `foto_profil`, `trust_score`, `status_akun`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'Admin Tass', '2021000001', 'admin@tass.telkomuniversity.ac.id', '$2a$10$Og2yIzkbpn5U2xQim.ij.uvlOCT/FN5TCo5OAo5mmKlbGgQ7VRKcK', '081234567890', 'Ilmu Terapan', 'D3 Sistem Informasi', '2021', 'Jl. Citarum No. 1, Bandung', '/images/profile/user1.jpg', 0.00, 'Aktif', 'Admin', '2025-05-31 09:46:11', '2025-06-01 10:39:16'),
+(1, 'Admin Tass', '2021000001', 'admin@tass.telkomuniversity.ac.id', '$2a$10$Og2yIzkbpn5U2xQim.ij.uvlOCT/FN5TCo5OAo5mmKlbGgQ7VRKcK', '081234567890', 'Ilmu Terapan', 'D3 Sistem Informasi', '2021', 'Jl. Citarum No. 1, Bandung', '/images/profile/user1.jpg', 0.00, 'Aktif', 'Admin', '2025-05-31 09:46:11', '2025-06-01 16:22:12'),
 (3, 'DIKI ALIF TAUFIK', '607012400005', 'dikialiftaufik@student.telkomuniversity.ac.id', '$2a$10$EmlEHodvSuV/U59S3jr3/uGHaaFeIbXLyC0wvfsim2xz9oeAmA6QG', '089659317206', 'Ilmu Terapan', 'D3 Sistem Informasi', '2024', 'Jl. Bihbul Raya I', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/profile/user_3_1748738013953.png', 0.00, 'Aktif', 'User', '2025-05-31 10:14:32', '2025-06-01 01:58:09'),
 (5, 'EGA FIANDRA PRATAMA', '607012400032', 'egafiandrapratama@student.telkomuniversity.ac.id', '$2a$10$A6neGZoGATaSNTLHBDvPJ.LrQ1vR13lNZg/p9PRRy5IbBXaQn1Vsy', '081215486311', 'Ilmu Terapan', 'D3 Sistem Informasi', '2024', 'Jl. Buah Batu', 'file:/D:/Telkom%20University/Semester%202/PEMROGRAMAN%20BERORIENTASI%20OBJEK/barterbukukuliah/uploads/profile/user_5_1748774335334.jpg', 0.00, 'Aktif', 'User', '2025-06-01 10:28:19', '2025-06-01 10:38:55');
 
@@ -292,7 +303,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `master_fakultas`
@@ -310,7 +321,7 @@ ALTER TABLE `master_mata_kuliah`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ratings`
@@ -322,7 +333,7 @@ ALTER TABLE `ratings`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `trust_score_history`

@@ -87,30 +87,42 @@ public class SearchBookController {
             private final Button detailBtn = new Button("Lihat Detail");
             private final Button barterBtn = new Button("Ajukan Barter");
             private final HBox container = new HBox(10, detailBtn, barterBtn);
-
+        
             {
                 detailBtn.setStyle("-fx-background-color: #0288D1; -fx-text-fill: white; -fx-font-size: 12px;");
                 barterBtn.setStyle("-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-size: 12px;");
                 container.setAlignment(Pos.CENTER);
                 container.setPadding(new Insets(5));
-
+        
                 detailBtn.setOnAction(evt -> {
                     Book book = getTableView().getItems().get(getIndex());
                     showBookDetail(book);
-                });                           
-
+                });
+        
                 barterBtn.setOnAction(evt -> {
                     Book targetBook = getTableView().getItems().get(getIndex());
-                    handleBarterRequest(targetBook);
+                    if ("Sedang Dipinjam".equalsIgnoreCase(targetBook.getStatusKetersediaan())) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Buku sedang dipinjam, tidak bisa diajukan barter.");
+                        alert.showAndWait();
+                    } else {
+                        handleBarterRequest(targetBook);
+                    }
                 });
             }
-
+        
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : container);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Book book = getTableView().getItems().get(getIndex());
+                    barterBtn.setDisable("Sedang Dipinjam".equalsIgnoreCase(book.getStatusKetersediaan()));
+                    setGraphic(container);
+                }
             }
         });
+        
     }
 
     private void initializeFilters() {
@@ -174,6 +186,10 @@ public class SearchBookController {
     }
 
     private void handleBarterRequest(Book targetBook) {
+        if (!"Tersedia".equalsIgnoreCase(targetBook.getStatusKetersediaan())) {
+            showAlert(Alert.AlertType.WARNING, "Tidak Bisa Barter", "Buku sedang dipinjam atau tidak tersedia.");
+            return;
+        }
         try {
             List<Book> myBooks = bookDAO.findByPemilik(currentUser.getIdUser());
             List<Book> availableMine = new ArrayList<>();

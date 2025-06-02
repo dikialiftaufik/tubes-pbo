@@ -1,13 +1,17 @@
 package com.barterbukukuliah.dao;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.User;
 import com.barterbukukuliah.util.DatabaseConnection;
-
-import java.math.BigDecimal;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BookDAO {
 
@@ -315,8 +319,70 @@ try (Connection conn = DatabaseConnection.getConnection();
         bookList.add(book);
     }
 }
-
-
         return bookList;
+    }
+
+    public boolean updateStatusBukuSedangDipinjam(int idBuku) throws SQLException {
+        String sql = "UPDATE books SET status_ketersediaan = 'Sedang Dipinjam' WHERE id_buku = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idBuku);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        }
+    }
+
+    // Contoh method load buku milik user
+    public List<Book> getBooksByUser(int idUser) throws SQLException {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE id_pemilik = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book b = new Book();
+                b.setIdBuku(rs.getInt("id_buku"));
+                b.setJudul(rs.getString("judul"));
+                b.setStatusKetersediaan(rs.getString("status_ketersediaan"));
+                // set properti lain jika perlu
+                books.add(b);
+            }
+        }
+        return books;
+    }
+
+    // Contoh method load semua buku (untuk search)
+    public List<Book> getAllBooks() throws SQLException {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book b = new Book();
+                b.setIdBuku(rs.getInt("id_buku"));
+                b.setJudul(rs.getString("judul"));
+                b.setStatusKetersediaan(rs.getString("status_ketersediaan"));
+                // set properti lain jika perlu
+                books.add(b);
+            }
+        }
+        return books;
+    }
+    
+
+    // Method cek status buku (dipakai di SearchBookController)
+    public String getStatusKetersediaan(int idBuku) throws SQLException {
+        String sql = "SELECT status_ketersediaan FROM books WHERE id_buku = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idBuku);
+            var rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("status_ketersediaan");
+            }
+            return null;
+        }
     }
 }
