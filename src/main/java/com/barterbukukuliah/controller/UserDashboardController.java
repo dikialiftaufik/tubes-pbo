@@ -15,8 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -51,10 +53,13 @@ public class UserDashboardController {
     @FXML private TableColumn<Book, String> colStatus;
     @FXML private TableColumn<Book, Void> colAksi;
     @FXML private Button addBookButton;
+    @FXML private BorderPane mainPane; 
 
     private final BookDAO bookDAO = new BookDAO();
     private User currentUser;
     private ObservableList<Book> bukuList = FXCollections.observableArrayList();
+
+    private Pane bukuSayaPane; // Simpan layout daftar buku saya
 
     /**
      * Dipanggil dari AuthController setelah login sukses.
@@ -62,10 +67,46 @@ public class UserDashboardController {
      */
     public void setUser(User user) {
         this.currentUser = user;
-        welcomeLabel.setText("Selamat datang, " + user.getNama() + "!");
-        initializeTableColumns();
-        loadBukuSaya();
+    welcomeLabel.setText("Selamat datang, " + user.getNama() + "!");
+    initializeTableColumns();
+
+    // Load layout daftar buku saya sekali dan simpan
+    bukuSayaPane = createBukuSayaPane();
+
+    // Tampilkan layout buku saya di mainPane center
+    mainPane.setCenter(bukuSayaPane);
+
+    loadBukuSaya();
     }
+
+    private Pane createBukuSayaPane() {
+    VBox root = new VBox(10);
+    root.setPadding(new Insets(20));
+
+    HBox header = new HBox(10);
+    header.setAlignment(Pos.CENTER_LEFT);
+
+    Label title = new Label("Daftar Buku Saya");
+    title.setStyle("-fx-font-size: 24px; -fx-text-fill: #212121; -fx-font-weight: bold;");
+
+    Button tambah = new Button("Tambah Buku");
+    tambah.setStyle("-fx-background-color: #2E7D32; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
+    tambah.setOnAction(e -> handleAddBook());
+
+    HBox spacer = new HBox();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+
+    header.getChildren().addAll(title, spacer, tambah);
+
+    // Pasang tableView yang sudah ada
+    bukuTable.setPrefHeight(600);
+    VBox.setVgrow(bukuTable, Priority.ALWAYS);
+
+    root.getChildren().addAll(header, bukuTable);
+
+    return root;
+}
+
 
     /**
      * Inisialisasi kolom TableView, termasuk kolom “Aksi” (Edit, Detail, Hapus).
@@ -166,7 +207,12 @@ public class UserDashboardController {
         }
     }
 
-    @FXML private void showBukuSaya()   { loadBukuSaya(); }
+    @FXML
+private void showBukuSaya() {
+    mainPane.setCenter(bukuSayaPane);  // Ganti konten center dengan layout buku saya
+    loadBukuSaya();
+}
+
     
     @FXML
     private void showCariBuku() {
@@ -193,8 +239,22 @@ public class UserDashboardController {
         }
     }    
 
-    @FXML private void showTransaksi()  { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Transaksi' sedang dalam pengembangan."); }
-    @FXML private void showRating()     { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Rating' sedang dalam pengembangan."); }
+    @FXML
+private void showTransaksi() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/barterbukukuliah/fxml/TransaksiMasukView.fxml"));
+        Pane transaksiPane = loader.load();
+
+        TransaksiMasukController controller = loader.getController();
+        controller.setCurrentUser(currentUser);  // Kirim user yang login ke controller transaksi
+
+        mainPane.setCenter(transaksiPane); // Ganti content center jadi transaksi
+    } catch (Exception e) {
+        e.printStackTrace();
+        showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman Transaksi.");
+    }
+}
+@FXML private void showRating()     { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Rating' sedang dalam pengembangan."); }
     @FXML private void showNotifikasi() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Notifikasi' sedang dalam pengembangan."); }
 
     /**

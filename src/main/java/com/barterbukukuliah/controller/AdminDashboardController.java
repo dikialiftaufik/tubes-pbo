@@ -9,9 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,6 +39,7 @@ public class AdminDashboardController {
     @FXML private TableColumn<User, Double> colUserTrust;
     @FXML private TableColumn<User, Void> colLihatDetail;
     @FXML private Button refreshButton;
+    @FXML private BorderPane mainPane;
 
     private final UserDAO userDAO = new UserDAO();
     private ObservableList<User> userList = FXCollections.observableArrayList();
@@ -108,7 +111,16 @@ public class AdminDashboardController {
 
     // Placeholder untuk menu lain
     @FXML private void showManageUsers() { loadAllUsers(); }
-    @FXML private void showManageBooks() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Manage Books' sedang dalam pengembangan."); }
+    @FXML
+    private void showManageBooks() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/barterbukukuliah/fxml/ManageBooks.fxml"));
+            mainPane.setCenter(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Bisa tambahkan alert error di sini
+        }
+    }
     @FXML private void showManageTransactions() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Manage Transactions' sedang dalam pengembangan."); }
     @FXML private void showReports() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Reports' sedang dalam pengembangan."); }
 

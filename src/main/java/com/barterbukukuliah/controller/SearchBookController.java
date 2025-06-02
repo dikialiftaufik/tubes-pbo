@@ -2,20 +2,20 @@ package com.barterbukukuliah.controller;
 
 import com.barterbukukuliah.dao.BookDAO;
 import com.barterbukukuliah.dao.TransactionDAO;
+import com.barterbukukuliah.dao.UserDAO;
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.User;
+import com.barterbukukuliah.service.MatchingService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class SearchBookController {
     @FXML private TableView<Book> bookTable;
     @FXML private TableColumn<Book, Integer> colId;
     @FXML private TableColumn<Book, String> colJudul;
-    @FXML private TableColumn<Book, String> colPemilik;   // KOLOM BARU
+    @FXML private TableColumn<Book, String> colPemilik;
     @FXML private TableColumn<Book, String> colPenulis;
     @FXML private TableColumn<Book, String> colIsbn;
     @FXML private TableColumn<Book, String> colMatkul;
@@ -44,10 +44,12 @@ public class SearchBookController {
 
     private final BookDAO bookDAO = new BookDAO();
     private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final UserDAO userDAO = new UserDAO();
+
     private User currentUser;
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-    /** Dipanggil setelah FXML di‐load dan user berhasil login. */
+    /** Dipanggil setelah FXML di-load dan user berhasil login. */
     public void setUser(User user) {
         this.currentUser = user;
         initializeTableColumns();
@@ -55,11 +57,10 @@ public class SearchBookController {
         loadAllBooks();
     }
 
-    /** Inisialisasi kolom TableView, termasuk kolom Pemilik. */
     private void initializeTableColumns() {
         colId.setCellValueFactory(new PropertyValueFactory<>("idBuku"));
         colJudul.setCellValueFactory(new PropertyValueFactory<>("judul"));
-        colPemilik.setCellValueFactory(new PropertyValueFactory<>("pemilikName")); // Ambil nama pemilik
+        colPemilik.setCellValueFactory(new PropertyValueFactory<>("pemilikName"));
         colPenulis.setCellValueFactory(new PropertyValueFactory<>("penulis"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         colMatkul.setCellValueFactory(new PropertyValueFactory<>("mataKuliah"));
@@ -80,13 +81,16 @@ public class SearchBookController {
 
                 detailBtn.setOnAction(evt -> {
                     Book book = getTableView().getItems().get(getIndex());
-                    UserDashboardController userDash = new UserDashboardController();
-                    userDash.showBookDetail(book);
+                    // Misal panggil method detail buku di controller lain
+                    // UserDashboardController userDash = new UserDashboardController();
+                    // userDash.showBookDetail(book);
+                    showAlert(Alert.AlertType.INFORMATION, "Detail Buku",
+                        "Judul: " + book.getJudul() + "\nPemilik: " + book.getPemilikNama());
                 });
 
                 barterBtn.setOnAction(evt -> {
-                    Book book = getTableView().getItems().get(getIndex());
-                    handleBarterRequest(book);
+                    Book targetBook = getTableView().getItems().get(getIndex());
+                    handleBarterRequest(targetBook);
                 });
             }
 
@@ -100,10 +104,10 @@ public class SearchBookController {
 
     private void initializeFilters() {
         kondisiFilter.setItems(FXCollections.observableArrayList(
-            "", "Baru", "Bagus", "Cukup", "Rusak Ringan", "Rusak Sedang"
+                "", "Baru", "Bagus", "Cukup", "Rusak Ringan", "Rusak Sedang"
         ));
         sortByCombo.setItems(FXCollections.observableArrayList(
-            "Newest", "Oldest", "PriceAsc", "PriceDesc", "Condition"
+                "Newest", "Oldest", "PriceAsc", "PriceDesc", "Condition"
         ));
         kondisiFilter.setValue("");
         sortByCombo.setValue("Newest");
@@ -112,12 +116,12 @@ public class SearchBookController {
     private void loadAllBooks() {
         try {
             List<Book> list = bookDAO.searchBooks(
-                currentUser.getIdUser(),
-                "", "", "", "Newest"
+                    currentUser.getIdUser(),
+                    "", "", "", "Newest"
             );
             bookList.setAll(list);
             bookTable.setItems(bookList);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Gagal memuat daftar buku.");
         }
@@ -125,19 +129,19 @@ public class SearchBookController {
 
     @FXML
     private void handleSearch() {
-        String keyword    = searchField.getText().trim();
+        String keyword = searchField.getText().trim();
         String mataKuliah = matkulField.getText().trim();
-        String kondisi    = kondisiFilter.getValue();
-        String sortBy     = sortByCombo.getValue();
+        String kondisi = kondisiFilter.getValue();
+        String sortBy = sortByCombo.getValue();
 
         try {
             List<Book> list = bookDAO.searchBooks(
-                currentUser.getIdUser(),
-                keyword, mataKuliah, kondisi, sortBy
+                    currentUser.getIdUser(),
+                    keyword, mataKuliah, kondisi, sortBy
             );
             bookList.setAll(list);
             bookTable.setItems(bookList);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Gagal menjalankan pencarian.");
         }
@@ -152,7 +156,6 @@ public class SearchBookController {
         loadAllBooks();
     }
 
-    /** Tombol “Kembali” – Tutup jendela ini, dashboard di belakang akan muncul kembali. */
     @FXML
     private void handleBackAction() {
         Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -164,19 +167,19 @@ public class SearchBookController {
             List<Book> myBooks = bookDAO.findByPemilik(currentUser.getIdUser());
             List<Book> availableMine = new ArrayList<>();
             for (Book b : myBooks) {
-                if ("Tersedia".equals(b.getStatusKetersediaan())) {
+                if ("Tersedia".equalsIgnoreCase(b.getStatusKetersediaan())) {
                     availableMine.add(b);
                 }
             }
             if (availableMine.isEmpty()) {
                 showAlert(Alert.AlertType.WARNING, "Tidak Ada Buku",
-                          "Anda tidak memiliki buku tersedia untuk barter.");
+                        "Anda tidak memiliki buku tersedia untuk barter.");
                 return;
             }
 
             ChoiceDialog<Book> dialog = new ChoiceDialog<>(availableMine.get(0), availableMine);
             dialog.setTitle("Pilih Buku untuk Ditawarkan");
-            dialog.setHeaderText("Anda akan men-barter buku:");
+            dialog.setHeaderText("Anda akan men-barter buku:\n" + targetBook.getJudul());
             dialog.setContentText("Pilih buku milik Anda:");
 
             Optional<Book> chosen = dialog.showAndWait();
@@ -191,19 +194,32 @@ public class SearchBookController {
             Optional<String> pesanOpt = msgDialog.showAndWait();
             String pesanPengaju = pesanOpt.orElse("");
 
-            transactionDAO.createTransaction(
-                targetBook.getIdBuku(),
-                offeredBook.getIdBuku(),
-                currentUser.getIdUser(),
-                targetBook.getIdPemilik(),
-                pesanPengaju
+            // Hitung match score dulu
+            User pengaju = currentUser;
+            User pemberi = userDAO.findById(targetBook.getIdPemilik());
+
+            double matchScore = MatchingService.hitungMatchScore(targetBook, offeredBook, pengaju, pemberi);
+
+            // Simpan transaksi dengan skor matching
+            boolean sukses = transactionDAO.createTransaction(
+                    targetBook.getIdBuku(),
+                    offeredBook.getIdBuku(),
+                    pengaju.getIdUser(),
+                    pemberi.getIdUser(),
+                    pesanPengaju,
+                    matchScore
             );
 
-            showAlert(Alert.AlertType.INFORMATION, "Sukses",
-                      "Permintaan barter berhasil dikirim ke pemilik buku.");
+            if (sukses) {
+                showAlert(Alert.AlertType.INFORMATION, "Sukses",
+                        "Permintaan barter berhasil dikirim ke pemilik buku.\n" +
+                                String.format("Skor kecocokan: %.2f%%", matchScore));
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal mengajukan barter.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Gagal mengajukan barter.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Terjadi kesalahan saat mengajukan barter.");
         }
     }
 

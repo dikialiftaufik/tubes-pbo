@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.barterbukukuliah.controller.TransaksiMasukController"
+      spacing="10" style="-fx-padding: 15;">
+
+    <Label text="Permintaan Barter Masuk" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+
+    <TableView fx:id="tableTransaksi" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60" />
+            <TableColumn fx:id="colBukuDiminta" text="Buku Diminta" prefWidth="180" />
+            <TableColumn fx:id="colBukuDitawarkan" text="Buku Ditawarkan" prefWidth="180" />
+            <TableColumn fx:id="colPengaju" text="Pengaju" prefWidth="150" />
+            <TableColumn fx:id="colPesan" text="Pesan Pengaju" prefWidth="200" />
+            <TableColumn fx:id="colMatchScore" text="Match Score" prefWidth="100" />
+            <TableColumn fx:id="colAksi" text="Aksi" prefWidth="150" />
+        </columns>
+    </TableView>
+
+</VBox>

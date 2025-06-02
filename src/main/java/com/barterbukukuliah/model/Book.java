@@ -18,6 +18,7 @@ public class Book {
     private String fotoPath3;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private User pemilik;
 
     // **FIELD TAMBAHAN untuk menampung nama pemilik (di‐JOIN dari tabel users)**
     private String pemilikName;
@@ -130,9 +131,10 @@ public class Book {
     }
 
     // --- Getter/Setter untuk field tambahan pemilikName ---
-    public String getPemilikName() {
-        return pemilikName;
+    public String getPemilikNama() {
+        return pemilik != null ? pemilik.getNama() : "";
     }
+    
     public void setPemilikName(String pemilikName) {
         this.pemilikName = pemilikName;
     }
@@ -140,5 +142,13 @@ public class Book {
     @Override
     public String toString() {
         return judul; // Masih menampilkan judul saat misalnya dipakai dalam ChoiceDialog
+    }
+
+    public User getPemilik() {
+        return pemilik;
+    }
+    
+    public void setPemilik(User pemilik) {
+        this.pemilik = pemilik;
     }
 }

@@ -211,4 +211,28 @@ public List<User> findAllUsers() throws SQLException {
         }
     }
 
+    public User findById(int id) throws Exception {
+        String sql = "SELECT * FROM users WHERE id_user = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setIdUser(rs.getInt("id_user"));
+                user.setNama(rs.getString("nama"));
+                user.setNim(rs.getString("nim"));
+                user.setEmail(rs.getString("email"));
+                user.setAngkatan(rs.getInt("angkatan"));
+                user.setRole(rs.getString("role"));
+                user.setStatusAkun(rs.getString("status_akun"));
+                // Set atribut lain sesuai kebutuhan
+                return user;
+            }
+        }
+        return null;
+    }
+
 }
