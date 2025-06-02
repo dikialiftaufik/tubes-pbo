@@ -69,18 +69,8 @@
                            style="-fx-font-size: 16px;"/>
                     <ComboBox fx:id="kondisiCombo" prefWidth="200"
                               GridPane.rowIndex="4" GridPane.columnIndex="1"
-                              style="-fx-font-size: 14px;">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Baru"/>
-                                <String fx:value="Bagus"/>
-                                <String fx:value="Cukup"/>
-                                <String fx:value="Rusak Ringan"/>
-                                <String fx:value="Rusak Sedang"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-
+                              style="-fx-font-size: 14px;"/>
+                    
                     <!-- Deskripsi -->
                     <Label text="Deskripsi:" GridPane.rowIndex="5" GridPane.columnIndex="0"
                            style="-fx-font-size: 16px;"/>

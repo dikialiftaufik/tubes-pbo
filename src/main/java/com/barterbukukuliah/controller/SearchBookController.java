@@ -1,24 +1,39 @@
 package com.barterbukukuliah.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.barterbukukuliah.dao.BookDAO;
 import com.barterbukukuliah.dao.TransactionDAO;
 import com.barterbukukuliah.dao.UserDAO;
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.User;
 import com.barterbukukuliah.service.MatchingService;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class SearchBookController {
 
@@ -81,12 +96,8 @@ public class SearchBookController {
 
                 detailBtn.setOnAction(evt -> {
                     Book book = getTableView().getItems().get(getIndex());
-                    // Misal panggil method detail buku di controller lain
-                    // UserDashboardController userDash = new UserDashboardController();
-                    // userDash.showBookDetail(book);
-                    showAlert(Alert.AlertType.INFORMATION, "Detail Buku",
-                        "Judul: " + book.getJudul() + "\nPemilik: " + book.getPemilikNama());
-                });
+                    showBookDetail(book);
+                });                           
 
                 barterBtn.setOnAction(evt -> {
                     Book targetBook = getTableView().getItems().get(getIndex());
@@ -230,4 +241,77 @@ public class SearchBookController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void showBookDetail(Book book) {
+        Stage detailStage = new Stage();
+        detailStage.initModality(Modality.APPLICATION_MODAL);
+        detailStage.setTitle("Detail Buku - " + book.getJudul());
+
+        Label titleLabel = new Label(book.getJudul());
+        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Label deskripsiLabel = new Label(book.getDeskripsi() != null ? book.getDeskripsi() : "-");
+        deskripsiLabel.setWrapText(true);
+
+        // Buat ImageView untuk foto
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(300);
+        imageView.setPreserveRatio(true);
+
+        // List foto path valid (non-null & non-empty)
+        List<String> fotoPaths = new ArrayList<>();
+        if (book.getFotoPath1() != null && !book.getFotoPath1().isBlank()) fotoPaths.add(book.getFotoPath1());
+        if (book.getFotoPath2() != null && !book.getFotoPath2().isBlank()) fotoPaths.add(book.getFotoPath2());
+        if (book.getFotoPath3() != null && !book.getFotoPath3().isBlank()) fotoPaths.add(book.getFotoPath3());
+
+        // Index foto yang sedang ditampilkan
+        final int[] currentIndex = {0};
+
+        if (!fotoPaths.isEmpty()) {
+            try {
+                Image img = new Image(fotoPaths.get(currentIndex[0]));
+                imageView.setImage(img);
+            } catch (Exception e) {
+                imageView.setImage(null);
+            }
+        }
+
+        Button prevBtn = new Button("←");
+        Button nextBtn = new Button("→");
+
+        prevBtn.setOnAction(e -> {
+            if (!fotoPaths.isEmpty()) {
+                currentIndex[0] = (currentIndex[0] - 1 + fotoPaths.size()) % fotoPaths.size();
+                try {
+                    Image img = new Image(fotoPaths.get(currentIndex[0]));
+                    imageView.setImage(img);
+                } catch (Exception ex) {
+                    imageView.setImage(null);
+                }
+            }
+        });
+
+        nextBtn.setOnAction(e -> {
+            if (!fotoPaths.isEmpty()) {
+                currentIndex[0] = (currentIndex[0] + 1) % fotoPaths.size();
+                try {
+                    Image img = new Image(fotoPaths.get(currentIndex[0]));
+                    imageView.setImage(img);
+                } catch (Exception ex) {
+                    imageView.setImage(null);
+                }
+            }
+        });
+
+        HBox imageControl = new HBox(10, prevBtn, imageView, nextBtn);
+        imageControl.setAlignment(Pos.CENTER);
+
+        VBox contentBox = new VBox(10, titleLabel, deskripsiLabel, imageControl);
+        contentBox.setPadding(new Insets(15));
+
+        Scene scene = new Scene(contentBox, 500, 450);
+        detailStage.setScene(scene);
+        detailStage.showAndWait();
+    }    
 }

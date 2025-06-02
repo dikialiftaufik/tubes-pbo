@@ -131,8 +131,8 @@ public class Book {
     }
 
     // --- Getter/Setter untuk field tambahan pemilikName ---
-    public String getPemilikNama() {
-        return pemilik != null ? pemilik.getNama() : "";
+    public String getPemilikName() {
+        return pemilik != null ? pemilik.getNama() : (pemilikName != null ? pemilikName : "");
     }
     
     public void setPemilikName(String pemilikName) {
