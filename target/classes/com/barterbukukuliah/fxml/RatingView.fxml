@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-background-color: #FAFAFA; -fx-padding: 25;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.barterbukukuliah.controller.RatingViewController">
+   <children>
+      <Label text="Skor &amp; Riwayat Kepercayaan Anda" textFill="#333333">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <Label text="Skor Anda Saat Ini:" textFill="#555555">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="trustScoreLabel" text="0.00" textFill="#2E7D32">
+         <font>
+            <Font name="System Bold" size="48.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      
+      <Separator fx:id="historySeparator" prefWidth="200.0" />
+      
+      <Label fx:id="historyTitleLabel" text="Riwayat Perubahan Skor" textFill="#444444">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <TableView fx:id="historyTable" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn fx:id="colTimestamp" prefWidth="160.0" style="-fx-alignment: CENTER;" text="Tanggal &amp; Waktu" />
+          <TableColumn fx:id="colActionType" prefWidth="180.0" text="Jenis Aksi" />
+            <TableColumn fx:id="colScoreChange" prefWidth="100.0" style="-fx-alignment: CENTER_RIGHT;" text="Perubahan" />
+            <TableColumn fx:id="colNewScore" prefWidth="100.0" style="-fx-alignment: CENTER_RIGHT;" text="Skor Baru" />
+            <TableColumn fx:id="colKeterangan" prefWidth="350.0" text="Keterangan" />
+        </columns>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+         <placeholder>
+             <Label text="Belum ada riwayat perubahan skor."/>
+         </placeholder>
+      </TableView>
+   </children>
+</VBox>

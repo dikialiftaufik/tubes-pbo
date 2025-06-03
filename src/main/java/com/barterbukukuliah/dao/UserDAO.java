@@ -188,6 +188,17 @@ public List<User> findAllUsers() throws SQLException {
         }
     }
 
+    public void updateTrustScore(int userId, double newTrustScore) throws SQLException {
+        String sql = "UPDATE users SET trust_score = ?, updated_at = CURRENT_TIMESTAMP WHERE id_user = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, newTrustScore);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+    
+
     /**
      * Update profil user: nama, nomor_telepon, fakultas, program_studi, angkatan, alamat, foto_profil.
      */
@@ -211,28 +222,72 @@ public List<User> findAllUsers() throws SQLException {
         }
     }
 
-    public User findById(int id) throws Exception {
-        String sql = "SELECT * FROM users WHERE id_user = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+    // Bagian dari UserDAO.java (pastikan metode findById seperti ini atau serupa)
+public User findById(int idUser) throws SQLException {
+    String sql = "SELECT * FROM users WHERE id_user = ?";
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, idUser);
+        try (ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
                 User user = new User();
                 user.setIdUser(rs.getInt("id_user"));
                 user.setNama(rs.getString("nama"));
                 user.setNim(rs.getString("nim"));
                 user.setEmail(rs.getString("email"));
-                user.setAngkatan(rs.getInt("angkatan"));
-                user.setRole(rs.getString("role"));
+                user.setPasswordHash(rs.getString("password_hash"));
+                user.setNomorTelepon(rs.getString("nomor_telepon"));
+                user.setFakultas(rs.getString("fakultas"));
+                user.setProgramStudi(rs.getString("program_studi"));
+                if (rs.getObject("angkatan") != null) {
+                    user.setAngkatan(rs.getInt("angkatan"));
+                }
+                user.setAlamat(rs.getString("alamat"));
+                user.setFotoProfil(rs.getString("foto_profil"));
+                user.setTrustScore(rs.getDouble("trust_score")); // Penting
                 user.setStatusAkun(rs.getString("status_akun"));
-                // Set atribut lain sesuai kebutuhan
+                user.setRole(rs.getString("role"));
+                user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
                 return user;
             }
         }
-        return null;
+    }
+    return null;
+}
+
+/**
+     * Helper method untuk memetakan ResultSet ke objek User.
+     * Ini menghindari duplikasi kode di findByEmail, findByNim, findById, findAllUsers.
+     */
+    private User mapRowToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setIdUser(rs.getInt("id_user"));
+        user.setNama(rs.getString("nama"));
+        user.setNim(rs.getString("nim"));
+        user.setEmail(rs.getString("email"));
+        user.setPasswordHash(rs.getString("password_hash"));
+        user.setNomorTelepon(rs.getString("nomor_telepon"));
+        user.setFakultas(rs.getString("fakultas"));
+        user.setProgramStudi(rs.getString("program_studi"));
+        // Perhatikan: rs.getObject("angkatan") bisa null
+        if (rs.getObject("angkatan") != null) {
+            user.setAngkatan(rs.getInt("angkatan"));
+        } else {
+            user.setAngkatan(0); // Atau biarkan default model jika berbeda
+        }
+        user.setAlamat(rs.getString("alamat"));
+        user.setFotoProfil(rs.getString("foto_profil"));
+        user.setTrustScore(rs.getDouble("trust_score")); // Penting untuk trust score
+        user.setStatusAkun(rs.getString("status_akun"));
+        user.setRole(rs.getString("role"));
+        if (rs.getTimestamp("created_at") != null) {
+            user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        }
+        if (rs.getTimestamp("updated_at") != null) {
+            user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        }
+        return user;
     }
 
 }

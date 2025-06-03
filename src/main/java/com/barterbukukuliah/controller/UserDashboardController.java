@@ -9,6 +9,7 @@ import com.barterbukukuliah.dao.BookDAO;
 import com.barterbukukuliah.dao.TransactionDAO;
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.TransaksiBarter;
+import com.barterbukukuliah.controller.RatingViewController; 
 import com.barterbukukuliah.model.User;
 
 import javafx.collections.FXCollections;
@@ -264,7 +265,28 @@ private void showTransaksi() {
         showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman Transaksi.");
     }
 }
-@FXML private void showRating()     { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Rating' sedang dalam pengembangan."); }
+@FXML
+    private void showRating() { // Menggantikan implementasi placeholder sebelumnya
+        try {
+            // Pastikan path FXML ke RatingView.fxml sudah benar
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/barterbukukuliah/fxml/RatingView.fxml"));
+            Pane ratingPane = loader.load();
+
+            RatingViewController controller = loader.getController();
+            if (currentUser != null) {
+                controller.setUser(currentUser); // Mengirim user yang sedang login
+            } else {
+                 showAlert(Alert.AlertType.ERROR, "Error", "Data pengguna tidak tersedia untuk menampilkan rating.");
+                 return;
+            }
+
+            mainPane.setCenter(ratingPane); // Menampilkan rating view di tengah dashboard
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman Rating & Skor Kepercayaan.");
+        }
+    }
+
     @FXML private void showNotifikasi() { showAlert(Alert.AlertType.INFORMATION, "Info", "Fitur 'Notifikasi' sedang dalam pengembangan."); }
 
     /**

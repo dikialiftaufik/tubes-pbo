@@ -88,24 +88,31 @@ public class TransaksiMasukController {
         }
     }
 
-    private void prosesRespon(TransaksiBarter trx, String status) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(status + " Permintaan Barter");
-        dialog.setHeaderText("Masukkan pesan balasan (opsional):");
-        dialog.setContentText("Pesan:");
+    private void prosesRespon(TransaksiBarter trx, String status) { //
+        TextInputDialog dialog = new TextInputDialog(); //
+        dialog.setTitle(status + " Permintaan Barter"); //
+        dialog.setHeaderText("Masukkan pesan balasan (opsional):"); //
+        dialog.setContentText("Pesan:"); //
 
-        dialog.showAndWait().ifPresent(pesanBalasan -> {
+        dialog.showAndWait().ifPresent(pesanBalasan -> { //
             try {
-                boolean berhasil = transactionService.respondToBarter(trx.getIdTransaksi(), status, pesanBalasan, trx.getIdUserPengaju());
-                if (berhasil) {
-                    showAlert(Alert.AlertType.INFORMATION, "Status transaksi berhasil diubah.");
-                    loadPendingTransactions();
+                boolean berhasil = transactionService.respondToBarter( //
+                    trx.getIdTransaksi(), //
+                    status,
+                    pesanBalasan,
+                    trx.getIdUserPengaju(), //
+                    trx.getIdBukuDiminta(), // Ini adalah ID buku milik PEMBERI (currentUserId) yang sedang diminta
+                    this.currentUserId      // Ini adalah ID PEMBERI (currentUserId) yang merespons
+                );
+                if (berhasil) { //
+                    showAlert(Alert.AlertType.INFORMATION, "Status transaksi berhasil diubah."); //
+                    loadPendingTransactions(); //
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Gagal mengubah status transaksi.");
+                    showAlert(Alert.AlertType.ERROR, "Gagal mengubah status transaksi."); //
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Terjadi kesalahan saat memproses transaksi.");
+                showAlert(Alert.AlertType.ERROR, "Terjadi kesalahan saat memproses transaksi."); //
             }
         });
     }
