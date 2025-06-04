@@ -83,8 +83,12 @@ public class UserDAO {
                     user.setTrustScore(rs.getDouble("trust_score"));
                     user.setStatusAkun(rs.getString("status_akun"));
                     user.setRole(rs.getString("role"));
-                    user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                    user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    if (rs.getTimestamp("created_at") != null) {
+                        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    }
+                    if (rs.getTimestamp("updated_at") != null) {
+                        user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                    }
                     return user;
                 } else {
                     return null;

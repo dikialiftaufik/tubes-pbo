@@ -386,4 +386,42 @@ try (Connection conn = DatabaseConnection.getConnection();
             return null;
         }
     }
+
+    /**
+     * Memeriksa apakah ISBN sudah ada di database,
+     * mengabaikan buku dengan ID tertentu (berguna saat edit).
+     * @param isbn ISBN yang akan diperiksa.
+     * @param excludeBookId ID buku yang akan diabaikan dalam pemeriksaan (0 jika tidak ada yang diabaikan, misal saat tambah buku baru).
+     * @return true jika ISBN sudah ada (selain untuk excludeBookId), false jika belum.
+     * @throws SQLException jika terjadi error pada query.
+     */
+    public boolean isIsbnExists(String isbn, int excludeBookId) throws SQLException {
+        // Jika ISBN kosong atau null, anggap tidak ada (atau tidak perlu validasi unik)
+        if (isbn == null || isbn.trim().isEmpty()) {
+            return false;
+        }
+
+        String sql = "SELECT COUNT(*) FROM books WHERE isbn = ? AND id_buku <> ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn.trim());
+            stmt.setInt(2, excludeBookId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Overload method untuk memeriksa keberadaan ISBN saat menambah buku baru (tidak ada ID buku yang dikecualikan).
+     * @param isbn ISBN yang akan diperiksa.
+     * @return true jika ISBN sudah ada, false jika belum.
+     * @throws SQLException jika terjadi error pada query.
+     */
+    public boolean isIsbnExists(String isbn) throws SQLException {
+        return isIsbnExists(isbn, 0); // Panggil dengan excludeBookId = 0
+    }
 }

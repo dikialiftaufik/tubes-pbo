@@ -1,19 +1,24 @@
 package com.barterbukukuliah.controller;
 
-import com.barterbukukuliah.dao.BookDAO;
-import com.barterbukukuliah.model.Book;
-import com.barterbukukuliah.model.User;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+
+import com.barterbukukuliah.dao.BookDAO;
+import com.barterbukukuliah.model.Book;
+import com.barterbukukuliah.model.User;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Controller untuk EditBook.fxml.
@@ -157,6 +162,17 @@ public class EditBookController {
         // 3. Validasi ISBN
         if (!isbn.isEmpty() && !isbn.matches("\\d{10}|\\d{13}")) {
             showAlert(Alert.AlertType.ERROR, "Validasi Gagal", "ISBN harus 10 atau 13 digit angka.");
+            return;
+        }
+        try {
+            // Saat mengedit, kita perlu mengecualikan buku saat ini dari pemeriksaan duplikasi ISBN
+            if (bookDAO.isIsbnExists(isbn, currentBook.getIdBuku())) {
+                showAlert(Alert.AlertType.ERROR, "Validasi Gagal", "ISBN '" + isbn + "' sudah terdaftar untuk buku lain.");
+                return;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Database", "Gagal memvalidasi ISBN: " + e.getMessage());
             return;
         }
         // 4. Validasi Mata Kuliah
