@@ -9,7 +9,6 @@ import com.barterbukukuliah.dao.BookDAO;
 import com.barterbukukuliah.dao.TransactionDAO;
 import com.barterbukukuliah.model.Book;
 import com.barterbukukuliah.model.TransaksiBarter;
-import com.barterbukukuliah.controller.RatingViewController; 
 import com.barterbukukuliah.model.User;
 
 import javafx.collections.FXCollections;
@@ -62,6 +61,7 @@ public class UserDashboardController {
     @FXML private TableColumn<Book, String> colKondisi;
     @FXML private TableColumn<Book, Double> colHarga;
     @FXML private TableColumn<Book, String> colStatus;
+    @FXML private TableColumn<Book, Double> colTrustScore;
     @FXML private TableColumn<Book, Void> colAksi;
     @FXML private Button addBookButton;
     @FXML private BorderPane mainPane; 
@@ -130,6 +130,7 @@ public class UserDashboardController {
         colMatkul.setCellValueFactory(new PropertyValueFactory<>("mataKuliah"));
         colKondisi.setCellValueFactory(new PropertyValueFactory<>("kondisi"));
         colHarga.setCellValueFactory(new PropertyValueFactory<>("hargaAsli"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusKetersediaan"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusKetersediaan"));
 
         colAksi.setCellFactory(param -> new TableCell<>() {

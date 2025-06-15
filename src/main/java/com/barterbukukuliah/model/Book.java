@@ -19,8 +19,6 @@ public class Book {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private User pemilik;
-
-    // **FIELD TAMBAHAN untuk menampung nama pemilik (di‐JOIN dari tabel users)**
     private String pemilikName;
 
     // … Getter/Setter untuk semua field di atas … //

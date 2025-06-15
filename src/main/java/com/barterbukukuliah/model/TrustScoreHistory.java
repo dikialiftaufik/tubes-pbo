@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 public class TrustScoreHistory {
     private String actionType;
     private double scoreChange;
-    private double oldScore; // Ditambahkan untuk potensi tampilan di masa depan, atau logging internal
+    private double oldScore; 
     private double newScore;
     private String keterangan;
     private LocalDateTime createdAt;
-    private Integer referenceId; // Ditambahkan untuk potensi tampilan di masa depan
+    private Integer referenceId; 
 
     // Konstruktor bisa ditambahkan jika perlu
     public TrustScoreHistory() {}

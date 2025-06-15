@@ -13,7 +13,6 @@ public class TransaksiBarter {
     private String pesanBalasan;
     private double matchScore;
     private Timestamp timestampRequest;
-
     private String judulBukuDiminta;
     private String judulBukuDitawarkan;
     private String namaPengaju;

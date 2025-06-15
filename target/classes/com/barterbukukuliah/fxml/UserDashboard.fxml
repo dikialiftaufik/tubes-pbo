@@ -143,6 +143,7 @@
                                     <PropertyValueFactory property="statusKetersediaan"/>
                                 </cellValueFactory>
                             </TableColumn>
+                            
                             <TableColumn fx:id="colAksi" text="Aksi" prefWidth="200"/>
                         </columns>
                     </TableView>
